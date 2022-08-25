@@ -1,5 +1,7 @@
 package mx.com.spring.app.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.RedirectAttributesMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import aj.org.objectweb.asm.Attribute;
 import mx.com.spring.app.controllers.util.paginator.PageRender;
 import mx.com.spring.app.models.entity.Cliente;
 import mx.com.spring.app.models.service.IClienteService;
@@ -35,6 +40,18 @@ public class ClienteController {
 	// @Qualifier("clienteDaoJPA") // se indica el nombre del componente o bean
 	// concreto
 	private IClienteService clienteService;
+	
+	@GetMapping(value="/ver/{id}")
+	public String ver(@PathVariable(value="id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+		Cliente cliente = clienteService.findOne(id);
+		if(cliente == null) {
+			flash.addFlashAttribute("error", "El cliente no existe" );
+			return "redirect:/listar";
+		}
+		model.put("cliente", cliente);
+		model.put("titulo", "Detalle Cliente" + cliente.getNombre());
+		return "ver";
+	}
 
 	// Metodo para listar clientes
 	@RequestMapping(value = "listar", method = RequestMethod.GET)
@@ -87,6 +104,7 @@ public class ClienteController {
 	 * 
 	 * @ModelAttribute("cliente") es para indicar explicitamente el nombre a la
 	 * clase, en este caso es redundante
+	 * guarda la foto en el directorio asignado
 	 */
 
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
@@ -97,7 +115,20 @@ public class ClienteController {
 			return "form";
 		}
 		if(!foto.isEmpty()) {
-			 Path directorioRecursos = Paths.get(null, null)
+			 Path directorioRecursos = Paths.get("src//main//resources//static//uploads");
+			 String rootPath = directorioRecursos.toFile().getAbsolutePath();
+			 try {
+				byte[] bytes = foto.getBytes();
+				Path rutacompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
+				Files.write(rutacompleta, bytes);
+				flash.addFlashAttribute("info", "La imagen se ha guardado correctamente '" + foto.getOriginalFilename() + "'");
+				cliente.setFoto(foto.getOriginalFilename());
+			 
+			 } catch (IOException e) {
+		
+				
+				e.printStackTrace();
+			}
 		}
 		String mensajeflash = cliente.getId() != null ? "Cliente editado con exito" : "Cliente creado con Exito!";
 		clienteService.save(cliente);
