@@ -1,17 +1,12 @@
 package mx.com.spring.app.models.dao;
 
-import java.util.List;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import mx.com.spring.app.models.entity.Cliente;
 
-public interface IClienteDao {
+						//Primero el nombre de la clase entity y el tipo de la llave
+public interface IClienteDao extends PagingAndSortingRepository<Cliente, Long>{
 	
-	public List<Cliente> findAll();
 	
-	public void save(Cliente cliente);
-	
-	public Cliente findOne(Long id);
-	
-	public void delete(Long id);
 
 }

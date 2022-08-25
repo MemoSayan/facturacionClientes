@@ -1,8 +1,10 @@
 package mx.com.spring.app.models.service;
 
-import java.util.List;
 
+import java.util.List;
+import org.springframework.data.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +19,7 @@ public class ClienteServiceImpl implements IClienteService {
  	@Override
  	@Transactional(readOnly = true)
 	public List<Cliente> findAll() {
-		return clienteDao.findAll();
+		return (List<Cliente>) clienteDao.findAll();
 	}
 
 	@Override
@@ -30,16 +32,23 @@ public class ClienteServiceImpl implements IClienteService {
 	@Override
 	@Transactional(readOnly = true)
 	public Cliente findOne(Long id) {
-		return clienteDao.findOne(id);
+		return clienteDao.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		clienteDao.delete(id);
-		
-		
+		clienteDao.deleteById(id);
 	}
-	
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Cliente> findALL(Pageable pageable) {
+		return clienteDao.findAll(pageable);
+	}
+
+
+
+
 
 }
