@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html xmlns:th="http://thymeleaf.org">
+
+<head <head th:replace="layout/layout :: head"></head>>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
+
 <body>
 
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container py-4 bg-light">
+        <div class="card">
+            <div class="card-header text-white bg-dark mb-3" th:text="${titulo}"></div>
+            <div class="card-body"></div>
+            <img class="img-thumbnail rounded float-left" style="max-width: 25%;"
+                th:src="@{'/uploads/' +  ${cliente.foto}}" th:alt="${cliente.foto}" />
+            <ul class="list-group">
+                <li class="list-group=item" th:text="${cliente.nombre}"></li>
+                <li class="list-group=item" th:text="${cliente.apellido}"></li>
+                <li class="list-group=item" th:text="${cliente.email}"></li>
+                <li class="list-group=item" th:text="${cliente.createAt}"></li>
+            </ul>
+
+        </div>
+    </div>
+
+    <footer th:replace="layout/layout :: footer"> </footer>
 </body>
+
 </html>
