@@ -24,3 +24,14 @@ INSERT INTO clientes (nombre, apellido, email, create_at, foto) VALUES('John', '
 INSERT INTO clientes (nombre, apellido, email, create_at, foto) VALUES('Joe', 'Bloggs', 'joe.bloggs@gmail.com', '2017-08-23', '');
 INSERT INTO clientes (nombre, apellido, email, create_at, foto) VALUES('John', 'Stiles', 'john.stiles@gmail.com', '2017-08-24', '');
 INSERT INTO clientes (nombre, apellido, email, create_at, foto) VALUES('Richard', 'Roe', 'stiles.roe@gmail.com', '2017-08-25', '');
+
+INSERT INTO productos (nombre, precio, create_at) VALUES('LG Pantalla LCD',349, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Sony Camara digital', 400, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Apple iPad', 700, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Apple Macbook', 1100, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('HP Notebook', 700, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Gaming Asus Notebook', 1200, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Hewlett Packard Multifuncional', 200, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Bicicleta Aro 26', 500, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Comoda 5 Cajones', 200, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('silla de oficina', 249, NOW());

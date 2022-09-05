@@ -1,6 +1,9 @@
 package mx.com.spring.app.controllers;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Map;
+
 import javax.validation.Valid;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,6 @@ import mx.com.spring.app.controllers.util.paginator.PageRender;
 import mx.com.spring.app.models.entity.Cliente;
 import mx.com.spring.app.models.service.IClienteService;
 import mx.com.spring.app.models.service.IUploadFileService;
-
 
 @Controller
 @SessionAttributes("cliente")
@@ -119,6 +121,7 @@ public class ClienteController {
 
 	/*
 	 * metodo para guardar el cliente, valida los campos y retorna en caso de error
+	 * 
 	 * @ModelAttribute("cliente") es para indicar explicitamente el nombre a la
 	 * clase, en este caso es redundante guarda la foto en el directorio asignado
 	 */
@@ -146,7 +149,7 @@ public class ClienteController {
 			flash.addFlashAttribute("info", "La imagen se ha guardado correctamente '" + uniqueFilename + "'");
 			cliente.setFoto(uniqueFilename);
 		}
-		
+
 		String mensajeflash = cliente.getId() != null ? "Cliente editado con exito" : "Cliente creado con Exito!";
 		clienteService.save(cliente);
 		status.setComplete();
