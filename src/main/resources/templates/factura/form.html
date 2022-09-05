@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="layout/layout :: head"></head>
+
+    <body>
+	<header th:replace="layout/layout :: header"></header>
+    <div class="container ">
+        <div class="card bg-light">
+            <div class="card-header text-white bg-dark mb-3" th:text="${titulo}"></div>
+                <div class="card-body">
+                    <h4 class="card-tittle">
+                        <a class="btn btn-secondary"
+						th:href="@{'/ver/' + ${factura.cliente.id}}"
+						th:text="'volver'"></a>
+                    </h4>
+
+                    <form th:action="@{/factura/form/}" th:object="${factura}" method="post">
+                       
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" th:text="'Cliente'"></label>
+                            <div class="col-sm-6">
+                                <input th:value="${factura.cliente.nombre} +  ' ' + ${factura.cliente.apellido}"
+                                    class="form-control" disabled='disabled' name="cliente">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" th:text="'Descripcion'"></label>
+                            <div class="col-sm-6">
+                                <input type="text" th:field="*{descripcion}" 
+                                class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" th:text="'Observacion'"></label>
+                            <div class="col-sm-6">
+                                <textarea th:field="*{observacion}" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <input type="button" th:value="${titulo}" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+    </div>
+
+
+<footer th:replace="layout/layout :: footer"> </footer>
+
+</body>
+
+</html>
