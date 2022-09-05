@@ -29,7 +29,7 @@ public class Factura implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
-	private String description;
+	private String descripcion; 
 	private String observacion;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_at")
@@ -64,12 +64,12 @@ public class Factura implements Serializable {
 		Id = id;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public String getObservacion() {
