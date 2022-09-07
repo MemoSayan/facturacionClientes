@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org ">
+
 <head>
 
 </head>
+
 <body>
     <script type="text/javascript" th:fragment="javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
             $("#buscar_producto").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: "/factura/cargar-productos/" + request.term,
-                        dataType: "json", 
+                        dataType: "json",
                         data: {
                             term: request.term
                         },
-                        success: function(data){
-                            response($.map(data, function(item){
-                                return{
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
                                     value: item.id,
                                     label: item.nombre,
                                     precio: item.precio,
@@ -25,15 +27,30 @@
                         },
                     });
                 },
-                select:function(event, ui){
-                    $("#buscar_producto").val(ui.item.label);
-
+                focus: function (event, ui) {
+                    event.preventDefault();
+                    $('input[name="buscar_producto"]').val(ui.item.label);
+                },
+                select: function (event, ui) {
+                    // $("#buscar_producto").val(ui.item.label);
+                    var linea = $("#plantillaItemsFactura").html();
+                    linea = linea.replace(/{ID}/g, ui.item.value);
+                    linea = linea.replace(/{NOMBRE}/g, ui.item.label);
+                    linea = linea.replace(/{PRECIO}/g, ui.item.precio);
+                    $("#cargarItemProductos tbody").append(linea);
+                    itemsHelper.calcularImporte(ui.item.value, ui.item.precio, 1);
                     return false;
                 }
             });
+        });
+
+        var itemsHelper = {
+            calcularImporte: function(id, precio, cantidad){
+                $("#total_importe_" + id).html(parseInt(precio) * parseInt(cantidad))
+            }
         }
-        );
     </script>
-    
+
 </body>
+
 </html>
