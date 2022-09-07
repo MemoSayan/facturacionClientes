@@ -1,5 +1,6 @@
 package mx.com.spring.app.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import mx.com.spring.app.models.entity.Cliente;
 import mx.com.spring.app.models.entity.Factura;
+import mx.com.spring.app.models.entity.Producto;
 import mx.com.spring.app.models.service.IClienteService;
 
 @Controller
@@ -25,7 +28,6 @@ public class FacturaController {
 	public String crear(@PathVariable(value = "clienteId") Long clienteId,
 	 Map<String, Object> model,
 			RedirectAttributes flash) {
-
 		Cliente cliente = clienteService.findOne(clienteId);
 
 		if (cliente == null) {
@@ -35,11 +37,15 @@ public class FacturaController {
 
 		Factura factura = new Factura();
 		factura.setCliente(cliente);
-
 		model.put("factura", factura);
 		model.put("titulo", "Crear Factura");
 
 		return "factura/form";
+	}
+	
+	@GetMapping(value = "/cargar-productos/{term}", produces= {"application/json"})
+	public @ResponseBody List<Producto> cargarProductos(@PathVariable String term){
+		return clienteService.findByNombre(term);
 	}
 
 

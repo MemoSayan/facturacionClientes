@@ -34,7 +34,6 @@
                 <a class="page-link" th:if="${page.hasNext}"
                     th:href="@{${page.url}(page=${page.paginaActual})}">&raquo;</a>
             </li>
-            </li>
 
             <li class="page-item" th:class="${page.last? 'page-item disabled':'page-item'}">
                 <span class="page-link" th:if="${page.last}">Ultima</span>
