@@ -14,8 +14,9 @@
                     <input type="number" value="1" name="cantidad[]" id="cantidad_{ID}" 
                     class="form-control col-sm-4" onchange="itemsHelper.calcularImporte({ID}, {PRECIO}, this.value);"/>
                 </td>
-                <td><span id="total_importe_{ID}"></span></td>
-        
+                <td><span id="total_importe_{ID}">0</span></td>
+                <td><a href="#" class="btn btn-danger " 
+                onclick="itemsHelper.eliminarLineaFactura({ID});">x</a></td>
             </tr>
 
         </tbody>

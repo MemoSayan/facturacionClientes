@@ -29,7 +29,8 @@
                             <label for="descripcion" class="col-sm-2 col-form-label" th:text="'Descripcion'"></label>
                             <div class="col-sm-6">
                                 <input type="text" th:field="*{descripcion}" 
-                                class="form-control">
+                                class="form-control" th:errorclass="'form-control is-invalid'" >
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
                             </div>
                         </div>
 
@@ -55,19 +56,19 @@
                                     <th>Nombre</th>
                                     <th>Precio</th>
                                     <th>Cantidad</th>
+                                    <th>Total</th>
+                                    <th>Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
-
+                            <h5>Total <span class="badge badge-secondary" id="gran_total">0</span></h5>
                         <div class="form-group row">
                             <div class="col-sm-6">
-                                <input type="button" th:value="${titulo}" class="btn btn-success" />
+                                <input type="submit" th:value="${titulo}" class="btn btn-success" />
                             </div>
                         </div>
-
                     </form>
-
                 </div>
             </div>
     </div>
