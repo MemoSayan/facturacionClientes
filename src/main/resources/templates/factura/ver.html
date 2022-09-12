@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+    <header th:replace="layout/layout :: header"></header>
+    <div class="container py-4">
+        <div class="card bg-light">
+            <div class="card-header text-white bg-dark mb-3" th:text="${titulo}"></div>
+            <div class="card-body">
+                <h4 class="card-tittle">
+                    <a class="btn btn-secondary"
+						th:href="@{'/ver/' + ${factura.cliente.id}}"
+						th:text="'volver'"></a>
+                </h4>
+                <ul class="list-group my-4">
+                    <li class="list-group-item list-group-item-primary" th:text="'Datos del cliente'"></li>
+                    <li class="list-group-item" th:text="${factura.cliente.email}"></li>
+                    <li class="list-group-item" th:text="${factura.cliente.email}"></li>
+                </ul>
+                <ul class="list-group my-3">
+                    <li class="list-group-item list-group-item-info" th:text="'Datos de la Factura'"> </li>
+                    <li class="list-group-item" th:text="'Folio: ' + ${factura.id}"></li>
+                    <li class="list-group-item" th:text="'Descripcion: ' + ${factura.descripcion}"></li>
+                    <li class="list-group-item" th:text="'Fecha: ' + ${factura.createAt}"></li>
+                </ul>
+               
+                <table class="table table-striped table-hover table-bordered my-3">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="linea: ${factura.items}">
+                            <td th:text="${linea.producto.nombre}"></td>
+                            <td th:text="${linea.producto.precio}"></td>
+                            <td th:text="${linea.cantidad}"></td>
+                            <td th:text="${linea.calcularImporte()}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5 class="float-right">Total <span th:text="${factura.total}" class="badge badge-secondary"></span></h5>
+
+            </div>
+        </div>
+    </div>
+    <footer th:replace="layout/layout :: footer"> </footer>
+
+</body>
+
+</html>
