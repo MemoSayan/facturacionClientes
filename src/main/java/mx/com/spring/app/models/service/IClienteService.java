@@ -18,6 +18,8 @@ public interface IClienteService {
 	public void save(Cliente cliente);
 
 	public Cliente findOne(Long id);
+	
+	public Cliente fetchByIdWFacturas(Long id);
 
 	public void delete(Long id);
 
@@ -28,4 +30,9 @@ public interface IClienteService {
 	public Producto findProductoById(Long id);
 	
 	public Factura findFacturaById(Long id);
+	
+	public void deleteFactura(Long id);
+	
+	public Factura fetchByIdWClienteWIFacturaWProducto(Long Id);
+	
 }
