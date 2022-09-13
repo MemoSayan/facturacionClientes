@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org"
+ xmlns:sec="http:://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="head">
 	<meta charset="UTF-8">
@@ -15,20 +16,38 @@
 <body>
 	<header th:fragment="header">
 
-		<!-- #04d9ce; --> 
-		<nav class="navbar navbar-light navbar-expand-lg" style="background-color: #f7ab71;">
-			<a class="navbar-brand" href="#"> Spring Boot</a>
+		<!-- #04d9ce; -->
+		<nav class="navbar navbar-light navbar-expand-lg" style="background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+		background: linear-gradient(to right, #ff4b2bec, #ff416df1);">
+			<a class="navbar-brand" href="#" style="color: #ffffff; font-weight: 500;"> Spring Boot</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
 				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
+				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
-						<a class="nav-link" href="#">Home <span class="sr-only"></span></a>
+						<a class="nav-link" href="#" style="color: #ffffff; font-weight: 500;">Home <span
+								class="sr-only"></span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" th:href="@{/listar}">Clientes</a>
+						<a class="nav-link" th:href="@{/listar}" style="color: #ffffff; font-weight: 500;">Clientes</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav navbar-right">
+					<li sec:authorize="!isAuthenticated()"> <a class="btn btn-outline-light" th:href="@{/login}">Sign
+							in</a></li>
+					<li sec:authorize="isAuthenticated()" class="dropdown dropleft">
+						<a class="btn btn-outline-light dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+							aria-expanded="false">
+							<span sec:authentication="name"></span>
+						</a>
+						<div class="dropdown-menu">
+							<form id="logout-form" th:action="@{/logout}" method="post">
+								<button onclick="document.getElementById('logout-form').submit();" type="submit" class="dropdown-item">Sign out</button>
+									<input type="hidden" th:value="_csrf.token" th:name="_csrf.parameterName">
+							</form>
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -46,11 +65,16 @@
 		<br />
 		<br />
 		<img th:src="@{/images/footer-spring.png}" alt="spring logo">
+		<p sec:authorize="isAuthenticated()">
+			Usuario Logeado : <span sec:authentication="name"> </span> | Role :
+			<span sec:authentication="principal.authorities"></span>
+		</p>
 		<p>Powered by Spring Boot</p>
 		<p> Guillermo De la cruz. Todos los derechos reservados. <a class="card-link">Terminos de uso y privacidad</a>
 		</p>
 
-		<link rel="stylesheet"href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet"
+			href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>

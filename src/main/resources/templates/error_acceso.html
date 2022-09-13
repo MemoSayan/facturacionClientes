@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <head th:replace="layout/layout :: head"></head>
+    <body>
+        <header th:replace="layout/layout :: header"></header>
+
+        <div class="container py-4">
+            <div class="card border-danger ">
+            <div class="card-header bg-danger text-center text-white h4">Error Acceso denegado</div>
+            <div class="card-body text-danger ">
+                <h5 class="card-text my-3 text-center">El usuario 
+                    <span th:text="${#authentication.name}"></span> no esta autorizado para esta accion </h5>    
+            </div>
+        </div>
+    </div>
+    <footer th:replace="layout/layout :: footer"> </footer> 
+</body>
+
+</html>

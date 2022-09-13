@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org"
+xmlns:sec="http:://www.thymeleaf.org/extras/spring-security">
 
 <head  th:replace="layout/layout :: head"></head>
 <meta charset="UTF-8">
@@ -15,7 +16,7 @@
             <div class="card-body">
 
                 <h4 class="card-tittle">
-                    <a class="btn btn-primary btn-xs" th:text="'Crear Factura'" th:href="@{'/factura/form/' + ${cliente.id}}"></a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-xs" th:text="'Crear Factura'" th:href="@{'/factura/form/' + ${cliente.id}}"></a>
                 </h4>
             <img th:if="${#strings.length(cliente.foto) > 0}" class="img-thumbnail rounded float-left" style="max-width: 25%; margin-right: 35px;"
                 th:src="@{'/uploads/' +  ${cliente.foto}}" th:alt="${cliente.foto}" /> 
@@ -34,8 +35,8 @@
                     <th>Descripcion</th>
                     <th>Fecha</th>
                     <th>Total</th>
-                    <th>Ver Detalle</th>
-                    <td>Elimninar</td>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')" >Ver Detalle</th>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">Elimninar</td>
 
                 </tr>
              </thead>
@@ -45,8 +46,8 @@
                     <th th:text="${factura.descripcion}"></th>
                     <th th:text="${factura.createAt}"></th>
                     <th th:text="${factura.total}"></th>
-                    <th><a th:href="@{'/factura/ver/' + ${factura.id}}" th:text="Detalle"  class="btn btn-info"></a></th>
-                    <th><a th:href="@{'/factura/eliminar/' + ${factura.id}}" th:text="X"  class="btn btn-danger"
+                    <th sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/factura/ver/' + ${factura.id}}" th:text="Detalle"  class="btn btn-info"></a></th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/factura/eliminar/' + ${factura.id}}" th:text="X"  class="btn btn-danger"
                         onclick="return confirm('Estas seguro de eliminar la factura ?');"></a></th>
                 </tr>
              </tbody>
