@@ -19,8 +19,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 	
-	
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests()
@@ -35,11 +33,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.permitAll().and()
 		.logout().permitAll()
 		.and().exceptionHandling().accessDeniedPage("/error_403");
-		
-		
 	}
-
-
 
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
