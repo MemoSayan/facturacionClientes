@@ -12,6 +12,7 @@
 	<groupId>mx.com.spring.datajpa.app</groupId>
 	<artifactId>spring-boot-daja-jpa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	 <packaging>war</packaging>
 	<name>spring-boot-daja-jpa</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>

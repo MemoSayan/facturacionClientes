@@ -2,8 +2,10 @@ package mx.com.spring.app.controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +15,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -30,7 +34,7 @@ import mx.com.spring.app.controllers.util.paginator.PageRender;
 import mx.com.spring.app.models.entity.Cliente;
 import mx.com.spring.app.models.service.IClienteService;
 import mx.com.spring.app.models.service.IUploadFileService;
-
+ 
 @Controller
 @SessionAttributes("cliente")
 public class ClienteController {
@@ -46,6 +50,7 @@ public class ClienteController {
 	@Autowired
 	private IUploadFileService uploadsFileService;
 
+	@Secured("ROLE_USER")
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
 
@@ -61,6 +66,7 @@ public class ClienteController {
 				.body(recurso);
 	}
 
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping(value = "/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = clienteService.fetchByIdWFacturas(id);
@@ -75,7 +81,36 @@ public class ClienteController {
 
 	// Metodo para listar clientes
 	@RequestMapping(value = {"listar","/"}, method = RequestMethod.GET)
-	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+	public String listar(@RequestParam(name = "page", defaultValue = "0") 
+	int page, Model model , Authentication authentication, HttpServletRequest request) {
+		
+		if(authentication != null) {
+		log.info("usuario autenticado , el username es: ".concat(authentication.getName()));
+		}
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if(auth != null) {
+			log.info("Utilizando forma estatica::.. " .concat(auth.getName()));
+		}
+	
+		if(hasRole("ROLE_ADMIN")) {
+			log.info("..::username: ".concat(auth.getName()).concat(" Tienes acceso!"));
+		}else {
+			log.info("..::username: ".concat(auth.getName()).concat(" No Tienes acceso!"));
+		}
+		
+		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request, "ROLE_");
+		
+		if(securityContext.isUserInRole("ADMIN")) {
+			log.info("..::forma usando la clase securitycontexHolder...");
+		}
+		
+		if(request.isUserInRole("ROLE_ADMIN")) {
+			log.info("..::forma usando la clase HttpServletRe...");
+		}
+		
+		
 		Pageable pageRequest = PageRequest.of(page, 5);
 		Page<Cliente> clientes = clienteService.findALL(pageRequest);// paginacion de la lista
 		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
@@ -87,7 +122,7 @@ public class ClienteController {
 	/*
 	 * Metodo que muestra el formulario,
 	 */
-
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form")
 	public String Crear(Map<String, Object> model) {
 
@@ -101,6 +136,7 @@ public class ClienteController {
 	 * Este metodo retorna la pantalla editar
 	 */
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/form/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = null;
@@ -157,6 +193,7 @@ public class ClienteController {
 		return "redirect:listar";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 		if (id > 0) { // validamos que exista el id
@@ -172,4 +209,48 @@ public class ClienteController {
 		}
 		return "redirect:/listar";
 	}
+	
+	private boolean hasRole(String role) {
+		
+		SecurityContext context = SecurityContextHolder.getContext();
+		if(context == null) {
+			return false;
+		}
+		
+		Authentication auth = context.getAuthentication();
+		
+		if(auth == null) {
+			return false;
+		}
+	
+	 Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+	/*	for(GrantedAuthority authority: authorities) {
+			if(role.equals(authority.getAuthority())) {
+				log.info("..:: Hey usuario: ".concat(auth.getName()).concat(" Tu role es ".concat(authority.getAuthority())));
+				return true;
+			}
+		}
+		return false; */
+	 return authorities.contains(new SimpleGrantedAuthority(role));
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

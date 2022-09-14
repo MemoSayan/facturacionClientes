@@ -7,7 +7,7 @@
 	<title th:text="'Spring Boot - ' + ${titulo}">Insert title here</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
 		integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-
+		<link th:href="@{/css/styles_footer.css}" rel="stylesheet" >
 	<!--	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
 	integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"> -->
 
@@ -62,14 +62,14 @@
 	</div>
 
 	<footer th:fragment="footer" class="container">
-		<br />
-		<br />
-		<img th:src="@{/images/footer-spring.png}" alt="spring logo">
-		<p sec:authorize="isAuthenticated()">
-			Usuario Logeado : <span sec:authentication="name"> </span> | Role :
-			<span sec:authentication="principal.authorities"></span>
-		</p>
-		<p>Powered by Spring Boot</p>
+		<div class="footer-h">
+		<img th:src="@{/images/footer-spring.png}" alt="spring logo" style="width: 25%;">
+		<p >Powered by Spring Boot</p>
+	</div>
+	<p sec:authorize="isAuthenticated()">
+		Usuario Logeado : <span sec:authentication="name"> </span> | Role :
+		<span sec:authentication="principal.authorities"></span>
+	</p>
 		<p> Guillermo De la cruz. Todos los derechos reservados. <a class="card-link">Terminos de uso y privacidad</a>
 		</p>
 
@@ -86,8 +86,5 @@
 			crossorigin="anonymous"></script>
 	</footer>
 </body>
-
-
-
 
 </html>

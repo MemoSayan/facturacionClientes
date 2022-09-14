@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.*;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.userdetails.User;
@@ -11,9 +13,14 @@ import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import mx.com.spring.app.auth.handler.LoginSuccesHandler;
+
+@EnableGlobalMethodSecurity(securedEnabled = true)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-
+	@Autowired
+	private LoginSuccesHandler successHandler;
+		
 	@Bean
 	public static BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -23,13 +30,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests()
 		.antMatchers("/", "/css/**","/js/**", "/images/**", "/listar")
-		.permitAll().antMatchers("/ver/**").hasAnyRole("USER")
+		.permitAll()
+		/*.antMatchers("/ver/**").hasAnyRole("USER")
 		.antMatchers("/uploads/**").hasAnyRole("USER")
 		.antMatchers("/form/**").hasAnyRole("ADMIN")
 		.antMatchers("/eliminar/**").hasAnyRole("ADMIN")
-		.antMatchers("/factura/**").hasAnyRole("ADMIN")
+		.antMatchers("/factura/**").hasAnyRole("ADMIN") */
 		.anyRequest().authenticated()
-		.and().formLogin().loginPage("/login")
+		.and().formLogin()
+		.successHandler(successHandler)
+		.loginPage("/login")
 		.permitAll().and()
 		.logout().permitAll()
 		.and().exceptionHandling().accessDeniedPage("/error_403");

@@ -1,0 +1,6 @@
+.footer-h{
+ display: flex;
+column-gap: 10px; 
+padding-top: 4rem;
+padding-bottom: 1rem;
+}
