@@ -1,14 +1,15 @@
-package mx.com.spring.app.controllers;
+	package mx.com.spring.app.controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +42,8 @@ public class ClienteController {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final static String UPLOADS_FOLDER = "uploads";
-
+	@Autowired
+	private MessageSource messageSource;  
 	@Autowired
 	// @Qualifier("clienteDaoJPA") // se indica el nombre del componente o bean
 	// concreto
@@ -50,7 +52,7 @@ public class ClienteController {
 	@Autowired
 	private IUploadFileService uploadsFileService;
 
-	@Secured("ROLE_USER")
+	@Secured("ROLE_USER")		
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
 
@@ -82,7 +84,7 @@ public class ClienteController {
 	// Metodo para listar clientes
 	@RequestMapping(value = {"listar","/"}, method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") 
-	int page, Model model , Authentication authentication, HttpServletRequest request) {
+	int page, Model model , Authentication authentication, HttpServletRequest request, Locale locale) {
 		
 		if(authentication != null) {
 		log.info("usuario autenticado , el username es: ".concat(authentication.getName()));
@@ -100,6 +102,7 @@ public class ClienteController {
 			log.info("..::username: ".concat(auth.getName()).concat(" No Tienes acceso!"));
 		}
 		
+		
 		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request, "ROLE_");
 		
 		if(securityContext.isUserInRole("ADMIN")) {
@@ -107,14 +110,14 @@ public class ClienteController {
 		}
 		
 		if(request.isUserInRole("ROLE_ADMIN")) {
-			log.info("..::forma usando la clase HttpServletRe...");
+			log.info("..::forma usando la clase HttpServletRequest...");
 		}
 		
 		
 		Pageable pageRequest = PageRequest.of(page, 5);
 		Page<Cliente> clientes = clienteService.findALL(pageRequest);// paginacion de la lista
 		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
-		model.addAttribute("titulo", "Listado de Clientes");
+		model.addAttribute("titulo", messageSource.getMessage("text.cliente.listar.titulo", null, locale));
 		model.addAttribute("clientes", clientes);
 		model.addAttribute("page", pageRender);
 		return "listar";

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org"
- xmlns:sec="http:://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://thymeleaf.org" xmlns:sec="http:://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="head">
 	<meta charset="UTF-8">
 	<title th:text="'Spring Boot - ' + ${titulo}">Insert title here</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
 		integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-		<link th:href="@{/css/styles_footer.css}" rel="stylesheet" >
+	<link th:href="@{/css/styles_footer.css}" rel="stylesheet">
 	<!--	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
 	integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"> -->
 
@@ -44,12 +43,36 @@
 						</a>
 						<div class="dropdown-menu">
 							<form id="logout-form" th:action="@{/logout}" method="post">
-								<button onclick="document.getElementById('logout-form').submit();" type="submit" class="dropdown-item">Sign out</button>
-									<input type="hidden" th:value="_csrf.token" th:name="_csrf.parameterName">
+								<button onclick="document.getElementById('logout-form').submit();" type="submit"
+									class="dropdown-item">Sign out</button>
+								<input type="hidden" th:value="_csrf.token" th:name="_csrf.parameterName">
 							</form>
 						</div>
 					</li>
 				</ul>
+				<ul class="navbar-nav navbar-right mx-4">
+					<li class="nav-item mx-1"><a class="btn btn-outline-primary" th:href="@{/locale(lang=es_ES)}"
+							th:text="ES"></a></li>
+					<li class="nav-item mx-1"><a class="btn btn-outline-primary" th:href="@{/locale(lang=en_US)}">EN</a>
+					</li>
+					<li class="nav-item mx-1"><a class="btn btn-outline-primary" th:href="@{/locale(lang=de_DE)}">DE</a>
+					</li>
+					<li class="nav-item dropdown show mx-2">
+						<a class="btn btn-outline-light dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+							aria-expanded="false" id="dropdownLang">
+							<span th:text="#{text.locale.language}"></span></a>	
+
+							<div class="dropdown-menu">
+								<a class="dropdown-item" th:href="@{/locale(lang=es_ES)}"
+									th:text="#{text.locale.es}"></a>
+								<a class="dropdown-item" th:href="@{/locale(lang=en_US)}"
+									th:text="#{text.locale.en}"></a>
+								<a class="dropdown-item" th:href="@{/locale(lang=de_DE)}"
+									th:text="#{text.locale.de}"></a>
+							</div>
+					</li>
+				</ul>
+
 			</div>
 		</nav>
 		<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
@@ -63,13 +86,13 @@
 
 	<footer th:fragment="footer" class="container">
 		<div class="footer-h">
-		<img th:src="@{/images/footer-spring.png}" alt="spring logo" style="width: 25%;">
-		<p >Powered by Spring Boot</p>
-	</div>
-	<p sec:authorize="isAuthenticated()">
-		Usuario Logeado : <span sec:authentication="name"> </span> | Role :
-		<span sec:authentication="principal.authorities"></span>
-	</p>
+			<img th:src="@{/images/footer-spring.png}" alt="spring logo" style="width: 25%;">
+			<p>Powered by Spring Boot</p>
+		</div>
+		<p sec:authorize="isAuthenticated()">
+			Usuario Logeado : <span sec:authentication="name"> </span> | Role :
+			<span sec:authentication="principal.authorities"></span>
+		</p>
 		<p> Guillermo De la cruz. Todos los derechos reservados. <a class="card-link">Terminos de uso y privacidad</a>
 		</p>
 
