@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
@@ -33,12 +32,13 @@ public class FacturaPDFView extends AbstractPdfView {
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		Factura factura = (Factura) model.get("factura");
+		Locale locale = localeResolver.resolveLocale(request);
 		//Locale locale = localeResolver.resolveLocale(request);
 		//
 		PdfPTable tabla = new PdfPTable(1);
 		tabla.setSpacingAfter(40);
 		PdfPCell cell = null;
-		cell = new PdfPCell(new Phrase(""));
+		cell = new PdfPCell(new Phrase(messageSource.getMessage("text.factura.datos.cliente", null, locale)));
 		cell.setBackgroundColor(new Color(184, 218, 255));
 		cell.setPadding(8f);
 		tabla.addCell(cell);
@@ -47,7 +47,7 @@ public class FacturaPDFView extends AbstractPdfView {
 
 		PdfPTable tabla2 = new PdfPTable(1);
 		tabla2.setSpacingAfter(20);
-		cell = new PdfPCell(new Phrase("123"));
+		cell = new PdfPCell(new Phrase(messageSource.getMessage("text.factura.datos.factura", null, locale)));
 		cell.setBackgroundColor(new Color(195, 230, 203));
 		cell.setPadding(8f);
 		tabla2.addCell(cell);

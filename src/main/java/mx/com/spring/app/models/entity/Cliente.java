@@ -23,6 +23,10 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "clientes")
 public class Cliente implements Serializable {
@@ -42,13 +46,13 @@ public class Cliente implements Serializable {
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	//@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createAt;
 	private String foto;
-	@OneToMany(
-			mappedBy = "cliente", 
-			fetch = FetchType.LAZY, 
-			cascade = CascadeType.ALL
-		)
+	@OneToMany( mappedBy = "cliente", 
+				fetch = FetchType.LAZY, 
+				cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Factura> facturas; 
 	private static final long serialVersionUID = 1L;
 	

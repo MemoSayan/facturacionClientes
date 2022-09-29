@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,8 @@ import mx.com.spring.app.models.service.IClienteService;
 public class FacturaController {
 
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
+
+	
 
 	@Autowired
 	private IClienteService clienteService;

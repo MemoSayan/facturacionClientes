@@ -3,6 +3,7 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import mx.com.spring.app.controllers.util.paginator.PageRender;
 import mx.com.spring.app.models.entity.Cliente;
 import mx.com.spring.app.models.service.IClienteService;
 import mx.com.spring.app.models.service.IUploadFileService;
+import mx.com.spring.app.view.xml.ClienteList;
  
 @Controller
 @SessionAttributes("cliente")
@@ -80,7 +82,15 @@ public class ClienteController {
 		model.put("titulo", "Detalle del Cliente: " + cliente.getNombre());
 		return "ver";
 	}
+	
+	// Metodo para listar clientes
+		@ResponseBody
+		@RequestMapping(value = {"/listar-rest"}, method = RequestMethod.GET)
+		public ClienteList listarRest() {
 
+			return new ClienteList( clienteService.findAll());
+		}
+		
 	// Metodo para listar clientes
 	@RequestMapping(value = {"listar","/"}, method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") 
