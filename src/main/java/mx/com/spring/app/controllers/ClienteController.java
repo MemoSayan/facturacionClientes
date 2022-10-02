@@ -84,11 +84,11 @@ public class ClienteController {
 	}
 	
 	// Metodo para listar clientes
-		@ResponseBody
-		@RequestMapping(value = {"/listar-rest"}, method = RequestMethod.GET)
-		public ClienteList listarRest() {
+		
+		@GetMapping(value = "/listar-rest")
+		public @ResponseBody ClienteList listarRest() {
 
-			return new ClienteList( clienteService.findAll());
+			return new ClienteList(clienteService.findAll());
 		}
 		
 	// Metodo para listar clientes

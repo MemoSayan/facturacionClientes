@@ -1,4 +1,4 @@
-package mx.com.spring.app.view.csv;
+package mx.com.spring.app.view.xml;
 
 import java.util.Map;
 
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.xml.MarshallingView;
 
 import mx.com.spring.app.models.entity.Cliente;
-import mx.com.spring.app.view.xml.ClienteList;
 
 @Component("listar.xml")
 public class ClienteListXmlView extends MarshallingView {

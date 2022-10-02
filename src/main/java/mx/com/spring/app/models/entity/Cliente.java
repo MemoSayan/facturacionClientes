@@ -46,16 +46,19 @@ public class Cliente implements Serializable {
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	//@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createAt;
 	private String foto;
 	@OneToMany( mappedBy = "cliente", 
 				fetch = FetchType.LAZY, 
-				cascade = CascadeType.ALL)
+				cascade = CascadeType.ALL,
+				orphanRemoval = true)
 	@JsonManagedReference
 	private List<Factura> facturas; 
 	private static final long serialVersionUID = 1L;
 	
+	private static byte cap = 124;
+	private static final byte capa = 124;
 	
 
 	public Cliente() {
